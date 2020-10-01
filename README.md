@@ -3,7 +3,7 @@ Este repositório será utilizado para versionamento de um trabalho da matéria 
 
 ## Projeto: Caixa registradora simples
 
-### O programa deve ter as seguintes funções:
+### Funcionalidade do programa:
 - Menu em loop:
   - 1 - Entrar como administrador
     - Menu do admnistrador:
