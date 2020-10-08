@@ -3,7 +3,24 @@ Este repositório será utilizado para versionamento de um trabalho da matéria 
 
 ## Projeto: Caixa registradora simples
 
-### Funcionalidade do programa:
+### Descrição:
+
+O programa funcionará como uma caixa registradora de produtos.
+
+Estamos nos espelhando neste projeto: https://emanuelcandido-js.netlify.app/javascript/vuejs/joao_ribeiro/challenges/01_cash_register/cash_register.
+
+A ideia é que o administrador possa cadastrar produtos com Nome, Preço e Quantidade, e o cliente possa escolher um produto para comprar e a quantidade de produtos, e enfim, quando um produto for comprado, será somado no caixa o valor total.
+
+### Informações cadastadas:
+
+| Nome | Tipo | Descrição |
+|---|---|---|
+| product_name | String (Cadeia de caracteres) | Nome do produto a ser vendido |
+| amount | Integer (Inteiro) | Quantidade de produtos disponíveis |
+| price | Float (Real) | Preço unitário do produto |
+| total | Float (Real) | Total de dinheiro em caixa |
+
+### Funcionamento do programa:
 - Menu em loop:
   - 1 - Entrar como administrador
     - Menu do admnistrador:
