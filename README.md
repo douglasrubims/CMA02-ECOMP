@@ -42,4 +42,4 @@ A ideia é que o administrador possa cadastrar produtos com Nome, Preço e Quant
       - 2 - Comprar produto
         - Entrada para saber qual produto vai comprar
         - Entrada para dizer a quantidade que vai comprar deste produto
-      - 4 - Opção de voltar
+      - 3 - Opção de voltar
