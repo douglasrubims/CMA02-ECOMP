@@ -17,6 +17,18 @@ typedef struct {
 	float total;
 } Caixa;
 
+void salvarCaixa(Caixa *caixa) {
+	FILE *arquivo;
+	int i;
+	arquivo = fopen("save.csv", "w");
+	if(arquivo) { // se nao der erro ao abrir o arquivo, entra no if pra fazer a gravação do mesmo
+		fprintf(arquivo, "%d,%.2f\n", caixa->qtd_itens, caixa->total); // coloca na primeira linha a quantidade de itens cadastrados e o total em dinheiro do caixa
+		// neste loop todos os itens do caixa são percorridos e serão inseridos o nome, preço e quantidade de produtos, separados por vírgula dentro do arquivo
+		for(i = 0; i < caixa->qtd_itens; i++) fprintf(arquivo, "%s,%.2f,%d\n", caixa->itens[i].nome, caixa->itens[i].preco, caixa->itens[i].quantidade);
+		fclose(arquivo);
+	}
+}
+
 void cadastrarProduto(Caixa *caixa) {
 	printf("Digite o nome do produto: ");
 	fflush(stdin);
@@ -28,6 +40,7 @@ void cadastrarProduto(Caixa *caixa) {
 	fflush(stdin);
 	scanf("%d", &caixa->itens[caixa->qtd_itens].quantidade); // entrada da quantidade de produtos em estoque
 	caixa->qtd_itens++;
+	salvarCaixa(caixa);
 	printf("[INFO] Produto cadastrado com sucesso.\n");
 	getch();
 }
@@ -64,6 +77,7 @@ void aumentarQuantidade(Caixa *caixa) {
 				// verifica se foi digitado uma quantidade válida
 				if(qtd > 0) {
 					caixa->itens[id - 1].quantidade += qtd;
+					salvarCaixa(caixa);
 					printf("Nova quantidade de %s: %d produtos.\n[INFO] Modificacao realizada com sucesso.\n", caixa->itens[id - 1].nome, caixa->itens[id - 1].quantidade);
 				} else printf("[INFO] Quantidade invalida.\n");
 			} else printf("[INFO] ID invalido.\n");
@@ -192,6 +206,7 @@ void comprarProduto(Caixa *caixa) {
 				if(qtd > 0 && qtd <= caixa->itens[id - 1].quantidade) { // verifica se foi digitado uma quantidade válida
 					caixa->total += qtd * caixa->itens[id - 1].preco; // adiciona o valor no caixa
 					caixa->itens[id - 1].quantidade -= qtd; // diminui a quantidade de produtos comprados no estoque
+					salvarCaixa(caixa);
 					printf("Sua compra ficou em: R$%.2f.\n[INFO] Compra realizada com sucesso.\n", (qtd * caixa->itens[id - 1].preco));
 				} else printf("[INFO] Quantidade invalida.\n");
 			} else printf("[INFO] ID invalido.\n");
@@ -226,11 +241,24 @@ void menuCliente(Caixa *caixa) {
 	} while(optionMenu != 3); // flag do while --> volta para o menu geral quando digita 3
 }
 
+void lerCaixa(Caixa *caixa) {
+	FILE *arquivo;
+	int i;
+	arquivo = fopen("save.csv", "r");
+	if(arquivo) { // se o arquivo existir, entra no if pra fazer a leitura do mesmo
+		fscanf(arquivo, "%d,%f\n", &caixa->qtd_itens, &caixa->total); // pega na primeira linha a quantidade de itens cadastrados e o total em dinheiro do caixa
+		// neste loop o arquivo é percorrido linha por linha buscando pelo nome, preço e quantidade de produtos, separados por vírgula
+		for(i = 0; i < caixa->qtd_itens; i++) fscanf(arquivo, "%[^,],%f,%d\n", caixa->itens[i].nome, &caixa->itens[i].preco, &caixa->itens[i].quantidade);
+		fclose(arquivo);
+	}
+};
+
 int main() {
 	Caixa caixa;
 	caixa.qtd_itens = 0;
 	caixa.total = 0;
 	int optionGeral;
+	lerCaixa(&caixa); // faz leitura do arquivo para dentro do caixa
 	do {
 		system("cls"); // limpa a tela
 		// menu geral para escolher entrar como administrador (1) ou cliente (2)
