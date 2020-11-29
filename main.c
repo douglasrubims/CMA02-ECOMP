@@ -32,6 +32,72 @@ void cadastrarProduto(Caixa *caixa) {
 	getch();
 }
 
+void aumentarQuantidade(Caixa *caixa) {
+	int i, j, id, qtd;
+	char strAlt[STRTAM];
+	printf("+------+----------------------------+----------+------------+\n|  Id  |            Nome            |  Preco   | Quantidade |\n+------+----------------------------+----------+------------+\n");
+	if(caixa->qtd_itens != 0) { // verifica se tem produto cadastrado. se n tiver, ele diz que nao tem produtos cadastrados
+		printf("| 0    | Voltar                     |          |            |\n");
+		for(i = 0; i < caixa->qtd_itens; i++) {
+			// as sequencias de FOR abaixo servem para preencher com espaços na frente de cada campo de texto dentro da tabela
+			// isso é feito pra que a tabela não fique deformada
+			// o sprintf esta servindo para transformar de float e int para string, para que possamos usar o strlen
+			sprintf(strAlt, "%d", i);
+			printf("| %d ", i + 1);
+			for(j = 0; j < 4 - strlen(strAlt); j++) printf(" ");
+			printf("| %s ", caixa->itens[i].nome);
+			for(j = 0; j < 26 - strlen(caixa->itens[i].nome); j++) printf(" ");
+			printf("| R$%.2f ", caixa->itens[i].preco);
+			sprintf(strAlt, "%.2f", caixa->itens[i].preco);
+			for(j = 0; j < 6 - strlen(strAlt); j++) printf(" ");
+			printf("| %d ", caixa->itens[i].quantidade);
+			sprintf(strAlt, "%d", caixa->itens[i].quantidade);
+			for(j = 0; j < 10 - strlen(strAlt); j++) printf(" ");
+			printf("|\n");
+		}
+		printf("+------+----------------------------+----------+------------+\nDigite o Id do produto que deseja aumentar a quantidade: ");
+		scanf("%d", &id);
+		if(id != 0) { // se o id for 0, ele nao entra no for e volta pro menu, pois 0 é para voltar
+			if(id > 0 && id <= caixa->qtd_itens) { // verifica se o id existe
+				printf("Quantidade a adicionar de %s: ", caixa->itens[id - 1].nome);
+				scanf("%d", &qtd); // entrada da nova quantidade de produtos
+				// verifica se foi digitado uma quantidade válida
+				if(qtd > 0) {
+					caixa->itens[id - 1].quantidade += qtd;
+					printf("Nova quantidade de %s: %d produtos.\n[INFO] Modificacao realizada com sucesso.\n", caixa->itens[id - 1].nome, caixa->itens[id - 1].quantidade);
+				} else printf("[INFO] Quantidade invalida.\n");
+			} else printf("[INFO] ID invalido.\n");
+			getch();
+		}
+	} else {
+		printf("|              NENHUM PRODUTO CADASTRADO AINDA              |\n+-----------------------------------------------------------+\n");
+		getch();
+	}
+}
+
+void submenuCadastrarProduto(Caixa *caixa) {
+	int optionSubmenu;
+	do {
+		system("cls");
+		// menu para cadastrar novo produto (1) ou aumentar quantidade de produtos (2)
+		printf("+---+---------------------------+\n|   |    Menu Administrativo    |\n+---+---------------------------+\n| 1 | Cadastrar um novo produto |\n| 2 | Mudar quantidade          |\n| 3 | Voltar                    |\n+---+---------------------------+\n");
+		scanf("%d", &optionSubmenu); // entrada da opcao escolhida pelo usuario
+		system("cls");
+		switch(optionSubmenu) {
+			case 1:
+				cadastrarProduto(caixa);
+				break;
+			case 2:
+				aumentarQuantidade(caixa);
+				break;
+			case 3:
+				break;
+			default:
+				printf("[INFO] Opcao invalida.\n");
+		}
+	} while(optionSubmenu != 3); // flag do while --> volta para o menu administrador quando digita 3
+}
+
 void listarProdutos(Caixa *caixa, int administrador) {
 	int i, j;
 	char strAlt[STRTAM];
@@ -77,7 +143,7 @@ void menuAdministrador(Caixa *caixa) {
 		system("cls");
 		switch(optionMenu) {
 			case 1:
-				cadastrarProduto(caixa);
+				submenuCadastrarProduto(caixa);
 				break;
 			case 2:
 				listarProdutos(caixa, 1);
