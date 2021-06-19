@@ -7,7 +7,7 @@ Este repositório será utilizado para versionamento de um trabalho da matéria 
 
 O programa funcionará como uma caixa registradora de produtos.
 
-Estamos nos espelhando neste projeto: https://emanuelcandido-js.netlify.app/javascript/vuejs/joao_ribeiro/challenges/01_cash_register/cash_register.
+Estamos nos espelhando neste projeto: https://emanuelcandido-js.netlify.app/javascript/vuejs/challenges/01_cash_register/cash_register.html.
 
 A ideia é que o administrador possa cadastrar produtos com Nome, Preço e Quantidade, e o cliente possa escolher um produto para comprar e a quantidade de produtos, e enfim, quando um produto for comprado, será somado no caixa o valor total.
 
